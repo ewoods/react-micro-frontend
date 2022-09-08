@@ -7,10 +7,6 @@ on:
 #    paths:
 #      - 'container/**'
 
-env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
 defaults:
   run:
     working-directory: container
@@ -34,9 +30,16 @@ jobs:
 #          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 #          AWS_DEFAULT_REGION: "us-east-1"
 
-      # Deploy to S3
-      - name: deploy to AWS S3
-        run: aws s3 sync container/dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/container/latest
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: 'us-east-1'   # optional: defaults to us-east-1
+          SOURCE_DIR: 'public'      # optional: defaults to entire repository
+          DEST_DIR: 'container/latest'
 
       - uses: ItsKarma/aws-cli@v1.70.0
         with:
