@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - master
-#    paths:
-#      - 'helloReact/**'
+    paths:
+      - 'helloReact/**'
 
 defaults:
   run:

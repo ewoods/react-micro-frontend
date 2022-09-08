@@ -9,7 +9,7 @@
   * https://medium.com/geekculture/how-to-deploy-a-run-time-micro-frontend-application-using-aws-123bb5578805
 * Github Repo - https://github.com/richardtbell/microfrontend-hello-world
 
-### Quick Start
+### Local Quick Start
 
 1. Start the server hosting the React microsite (helloReact)
 ```shell
