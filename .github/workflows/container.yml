@@ -39,10 +39,19 @@ jobs:
           SOURCE_DIR: 'container/dist'      # optional: defaults to entire repository
           DEST_DIR: 'container/latest'
 
-      - uses: ItsKarma/aws-cli@v1.70.0
-        with:
-          args: cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/container/latest/index.html"
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: "us-east-1"
+#      - uses: ItsKarma/aws-cli@v1.70.0
+#        with:
+#          args: cloudfront create-invalidation --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} --paths "/container/latest/index.html"
+#        env:
+#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          AWS_DEFAULT_REGION: "us-east-1"
+
+        - name: Invalidate CloudFront
+          uses: chetan/invalidate-cloudfront-action@v2
+          env:
+            DISTRIBUTION: ${{ secrets.AWS_DISTRIBUTION_ID }}
+            PATHS: "/container/latest/index.html"
+            AWS_REGION: "us-east-1"
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
